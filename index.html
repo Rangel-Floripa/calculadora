@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora simples</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f8f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+    
+        #calculadora {
+            background-color: #333;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: center;
+            color: white;
+            padding-bottom: 10px;
+        }
+    
+        h1 {
+            background-color: #f7931b;
+            padding: 10px;
+            margin: 0;
+            font-weight: bold;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+    
+        #display {
+            background-color: #444;
+            padding: 10px;
+            font-size: 24px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+    
+        #display2 {
+            background-color: #444;
+            padding: 10px;
+            font-size: 24px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+    
+        #displayInput {
+            background-color: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            font-size: 36px;
+            text-align: right;
+            outline: none;
+        }
+    
+        #displayInput2 {
+            background-color: transparent;
+            border: none;
+            color: rgb(132, 117, 117);
+            width: 100%;
+            font-size: 36px;
+            text-align: right;
+            outline: none;
+        }
+    
+        #teclado {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            padding: 10px;
+        }
+    
+        button {
+            background-color: #555;
+            border: none;
+            font-size: 24px;
+            color: white;
+            padding: 15px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+    
+        button:hover {
+            background-color: #777;
+        }
+    
+        button:active {
+            background-color: #444;
+        }
+    
+        button.num {
+            background-color: #333;
+        }
+    
+        button.ponto,
+        button.igual,
+        button.memoria,
+        button#reset {
+            background-color: #f7931b;
+            color: #333;
+        }
+    
+        button.memoria {
+            padding: 15px 15px;
+        }
+    
+        button.operador {
+            background-color: #f7931b;
+        }
+    </style>
+</head>
+<body>
+    <div id="calculadora">
+        <h1>Calculadora</h1>
+        <div id="display">
+            <input type="text" id="displayInput" disabled placeholder="valor" />
+        </div>
+        <div id="display2">
+            <input type="text" id="displayInput2" disabled placeholder="memoria" />
+        </div>
+        <div id="teclado">
+            <button class="num">7</button>
+            <button class="num">8</button>
+            <button class="num">9</button>
+            <button class="operador">/</button>
+            <button class="num">4</button>
+            <button class="num">5</button>
+            <button class="num">6</button>
+            <button class="operador">*</button>
+            <button class="num">1</button>
+            <button class="num">2</button>
+            <button class="num">3</button>
+            <button class="operador">-</button>
+            <button class="num">0</button>
+            <button class="ponto">.</button>
+            <button class="igual">=</button>
+            <button class="operador">+</button>
+            <button id="reset">Reset</button>
+            <button id="memoriaMais" class="memoria">M+</button>
+            <button id="memoriaMenos" class="memoria">M-</button>
+            <button id="memoriaClear" class="memoria">MC</button>
+        </div>
+    
+    </div>
+    <script>
+        // seleção dos elementos
+        const display = document.querySelector("#displayInput");
+        const display2 = document.querySelector("#displayInput2");
+        const botaoIgual = document.querySelector(".igual");
+        const botaoPonto = document.querySelector(".ponto");
+        const botoesNumeros = document.querySelectorAll(".num");
+        const botoesOperadores = document.querySelectorAll(".operador");
+        const botaoReset = document.querySelector("#reset");
+        const memoriaBotao = document.querySelectorAll(".memoria");
+
+
+        //Variáveis globais
+
+        let operacaoAtual = "";
+        let operador = null;
+        let valorAnterior = "";
+        let calculando = false;
+        let memoria = 0
+
+        // Funções
+        function atualizaDisplay() {
+            display.value = operacaoAtual;
+        }
+
+        function atualizaDisplay2() {
+            display2.value = `M = ${memoria}`;
+        }
+
+
+        function insereNumero(evento) {
+
+            if (calculando) {
+                operacaoAtual = evento.target.textContent;
+                calculando = false;
+            } else {
+                operacaoAtual += evento.target.textContent;
+            }
+            atualizaDisplay();
+        }
+
+
+        function inserePonto() {
+            if (operacaoAtual.indexOf(".") === -1) {
+                operacaoAtual += ".";
+                atualizaDisplay();
+            }
+        }
+
+        function insereOperador(evento) {
+            if (operacaoAtual !== "") {
+                if (!calculando) {
+                    if (operador !== null) {
+                        calcula();
+                    }
+                    valorAnterior = operacaoAtual;
+                    operacaoAtual = "";
+                }
+                operador = evento.target.textContent;
+            }
+        }
+
+        function calcula() {
+            let resultado = null;
+            const operandoAnterior = parseFloat(valorAnterior);
+            const operandoAtual = parseFloat(operacaoAtual);
+
+            switch (operador) {
+                case "+":
+                    resultado = operandoAnterior + operandoAtual;
+                    break;
+                case "-":
+                    resultado = operandoAnterior - operandoAtual;
+                    break;
+                case "*":
+                    resultado = operandoAnterior * operandoAtual;
+                    break;
+                case "/":
+                    if (operandoAtual !== 0) {
+                        resultado = operandoAnterior / operandoAtual;
+                    } else {
+                        alert("Erro: Divisão por zero não é permitida!");
+                        return;
+                    }
+                    break;
+            }
+            operacaoAtual = String(resultado);
+            valorAnterior = operacaoAtual;
+            calculando = true;
+            atualizaDisplay();
+            operador = null;
+        }
+
+        // Eventos
+        atualizaDisplay2()
+        memoriaBotao.forEach(function (botao) {
+            botao.addEventListener("click", function (event) {
+                const botaoclicado = event.target.id
+                switch (botaoclicado) {
+                    case "memoriaMais":
+                        memoria += parseFloat(operacaoAtual);
+                        atualizaDisplay2()
+                        break;
+                    case "memoriaMenos":
+                        memoria -= parseFloat(operacaoAtual);
+                        atualizaDisplay2()
+                        break;
+                    case "memoriaClear":
+                        memoria = 0;
+                        atualizaDisplay2()
+                        break;
+                }
+            })
+
+        })
+
+        botaoPonto.addEventListener("click", inserePonto);
+        botoesNumeros.forEach((botao) => botao.addEventListener("click", insereNumero));
+        botoesOperadores.forEach((botao) => botao.addEventListener("click", insereOperador));
+        botaoIgual.addEventListener("click", calcula);
+        botaoReset.addEventListener("click", () => location.reload(true));
+    </script>
+</body>
+</html>
