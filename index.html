@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +15,7 @@
             height: 100vh;
             margin: 0;
         }
-    
+
         #calculadora {
             background-color: #333;
             border-radius: 8px;
@@ -24,7 +25,7 @@
             color: white;
             padding-bottom: 10px;
         }
-    
+
         h1 {
             background-color: #f7931b;
             padding: 10px;
@@ -33,7 +34,7 @@
             border-top-left-radius: 8px;
             border-top-right-radius: 8px;
         }
-    
+
         #display {
             background-color: #444;
             padding: 10px;
@@ -41,7 +42,7 @@
             border-top-left-radius: 8px;
             border-top-right-radius: 8px;
         }
-    
+
         #display2 {
             background-color: #444;
             padding: 10px;
@@ -49,34 +50,34 @@
             border-top-left-radius: 8px;
             border-top-right-radius: 8px;
         }
-    
+
         #displayInput {
             background-color: transparent;
             border: none;
             color: white;
             width: 100%;
-            font-size: 36px;
+            font-size: 24px;
             text-align: right;
             outline: none;
         }
-    
+
         #displayInput2 {
             background-color: transparent;
             border: none;
             color: rgb(132, 117, 117);
             width: 100%;
-            font-size: 36px;
+            font-size: 24px;
             text-align: right;
             outline: none;
         }
-    
+
         #teclado {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 5px;
             padding: 10px;
         }
-    
+
         button {
             background-color: #555;
             border: none;
@@ -87,19 +88,19 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-    
+
         button:hover {
             background-color: #777;
         }
-    
+
         button:active {
             background-color: #444;
         }
-    
+
         button.num {
             background-color: #333;
         }
-    
+
         button.ponto,
         button.igual,
         button.memoria,
@@ -107,16 +108,17 @@
             background-color: #f7931b;
             color: #333;
         }
-    
+
         button.memoria {
             padding: 15px 15px;
         }
-    
+
         button.operador {
             background-color: #f7931b;
         }
     </style>
 </head>
+
 <body>
     <div id="calculadora">
         <h1>Calculadora</h1>
@@ -148,7 +150,7 @@
             <button id="memoriaMenos" class="memoria">M-</button>
             <button id="memoriaClear" class="memoria">MC</button>
         </div>
-    
+
     </div>
     <script>
         // seleção dos elementos
@@ -229,9 +231,7 @@
                     break;
                 case "/":
                     if (operandoAtual !== 0) {
-                        const resultadoSemArrendondamento = operandoAnterior / operandoAtual
-                        resultado = resultadoSemArrendondamento.toFixed(6);
-
+                        resultado = operandoAnterior / operandoAtual
                     } else {
                         alert("Erro: Divisão por zero não é permitida!");
                         return;
@@ -275,4 +275,5 @@
         botaoReset.addEventListener("click", () => location.reload(true));
     </script>
 </body>
+
 </html>
