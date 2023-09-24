@@ -229,14 +229,16 @@
                     break;
                 case "/":
                     if (operandoAtual !== 0) {
-                        resultado = operandoAnterior / operandoAtual;
+                        const resultadoSemArrendondamento = operandoAnterior / operandoAtual
+                        resultado = resultadoSemArrendondamento.toFixed(6);
+
                     } else {
                         alert("Erro: Divisão por zero não é permitida!");
                         return;
                     }
                     break;
             }
-            operacaoAtual = String(resultado);
+            operacaoAtual = String(resultado)
             valorAnterior = operacaoAtual;
             calculando = true;
             atualizaDisplay();
